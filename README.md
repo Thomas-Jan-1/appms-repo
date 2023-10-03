@@ -1,5 +1,7 @@
 # appms-repo
 ***
+![AppMS, eine Basis für viele Anwendungen](/img/eine_basis_fuer_viele_apps.jpg)
+
 
 ## Table of Contents
 1. [General Info](#general-info)
