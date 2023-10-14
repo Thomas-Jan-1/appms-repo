@@ -31,23 +31,36 @@ Dabei folgt AppMS dem Konzept von relationalen Datenbankmanagementsystemen (DBMS
 ## Funktionsüberblick
 ***
 
-| Funktion | Beispiel |
-|:--------------|:-------------:|
-| Statische Html-Seiten | ![App Wählerverzeichnis](/img/feature_static_html.png) |
-| editierbare/dynamische HTML-Seiten |  test |
+* statische Formulare
+* interaktive Formulare
+* voneinander abhängige Formulare
+* Workflow-Manager
+* Auswertungsdesigner
+* Authentifizierungsmethoden: interne DB und Ldap (SSO in Arbeit)
+* Anbindung mehrerer DBMS auf einer Maske (postgres, MySql)
+* durchgängiges Rollen- und Rechte-Management
+* umfangreiche Security-Maßnahmen
+* integrierter Debugger
+* Exportformate: csv, rtf, mail
+* flexible Design-Gestaltung
+* Verwaltung von historisierten Daten
+* Daten dynamsich per Ajax nachladen
+* serverseitiges Anstoßen von Scripten (shell, cmd)
+
+
 
 
 
 ## Einsatzbeispiele
 ***
 umgesetzte Anwendungen
-* BI-Manager (Tool zur Verwaltung von Schlüsseltabellen und Datenimporten eines DataWarehouse als Teil eines Business-Intelligence-Systems)
+* **BI-Manager** (Tool zur Verwaltung von Schlüsseltabellen und Datenimporten eines DataWarehouse als Teil eines Business-Intelligence-Systems)
 ![App BI-Manager](/img/example_bi-manager.png)
-* Antragstool (Tool zur Erstellung von Online-Formularen, die einen einfachen Standardworkflow durchlaufen)
+* **Antragstool** (Tool zur Erstellung von Online-Formularen, die einen einfachen Standardworkflow durchlaufen)
 ![App Antragstool](/img/example_req11.png)
-* Workflow-Manager (integraler Bestandteil aller Tools -> alle Daten können auch über Workflows erfasst werden.)
+* **Workflow-Manager** (integraler Bestandteil aller Tools -> alle Daten können auch über Workflows erfasst werden.)
 ![App Workflow](/img/example_workflow.png)
-* Wählerverzeichnis (Online Wählerverzeichnis zur Unterstützung des Wahlablaufes; inkl. SOAP-Schnittstelle zur datenliefernden Anwendung)
+* **Wählerverzeichnis** (Online Wählerverzeichnis zur Unterstützung des Wahlablaufes; inkl. SOAP-Schnittstelle zur datenliefernden Anwendung)
 ![App Wählerverzeichnis](/img/example_vote1.png)
 
 ## Installation
@@ -60,4 +73,3 @@ $ npm install
 $ npm start
 ```
 Side information: To use the application in a special environment use ```lorem ipsum``` to start
-
