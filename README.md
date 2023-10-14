@@ -6,8 +6,11 @@
 ## Table of Contents
 1. [Verwendungszweck](#Verwendungszweck)
 2. [Funktionsüberblick](#Funktionsüberblick)
-3. [Anwendungsbeispiele](#Einsatzbeispiele)
+3. [Anwendungsbeispiele](#Anwendungsbeispiele)
 4. [Installation](#Installation)
+4.1 [Systemvoraussetzungen](#Systemvoraussetzungen)
+4.2 [Installation mit Ansible](#Installation mit Ansible)
+4.3 [Weitere Installationsmöglichkeiten](#Weitere Installationsmöglichkeiten)
 
 
 ## Verwendungszweck
@@ -51,25 +54,42 @@ Dabei folgt AppMS dem Konzept von relationalen Datenbankmanagementsystemen (DBMS
 
 
 
-## Einsatzbeispiele
+## Anwendungsbeispiele
 ***
 umgesetzte Anwendungen
 * **BI-Manager** (Tool zur Verwaltung von Schlüsseltabellen und Datenimporten eines DataWarehouse als Teil eines Business-Intelligence-Systems)
 ![App BI-Manager](/img/example_bi-manager.png)
+
+
+
 * **Antragstool** (Tool zur Erstellung von Online-Formularen, die einen einfachen Standardworkflow durchlaufen)
 ![App Antragstool](/img/example_req11.png)
+
+
+
 * **Workflow-Manager** (integraler Bestandteil aller Tools -> alle Daten können auch über Workflows erfasst werden.)
 ![App Workflow](/img/example_workflow.png)
+
+
+
 * **Wählerverzeichnis** (Online Wählerverzeichnis zur Unterstützung des Wahlablaufes; inkl. SOAP-Schnittstelle zur datenliefernden Anwendung)
 ![App Wählerverzeichnis](/img/example_vote1.png)
 
+
+
 ## Installation
 ***
-A little intro about the installation. 
-```
+
 $ git clone https://example.com
 $ cd ../path/to/the/file
 $ npm install
 $ npm start
-```
-Side information: To use the application in a special environment use ```lorem ipsum``` to start
+
+
+### Systemvoraussetzungen
+
+
+### Installation mit Ansible
+
+
+### weitere Installationsmöglichkeiten
