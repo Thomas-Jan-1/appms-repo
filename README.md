@@ -4,16 +4,16 @@
 
 
 ## Table of Contents
-1. [Verwendungszweck](#general-info)
-2. [Funktionsüberblick](#features)
-3. [Anwendungsbeispiele](#use_cases)
-4. [Installation](#installation)
+1. [Verwendungszweck](#Verwendungszweck)
+2. [Funktionsüberblick](#Funktionsüberblick)
+3. [Anwendungsbeispiele](#Einsatzbeispiele)
+4. [Installation](#Installation)
 
 
 ## Verwendungszweck
 ***
 
-** AppMS ist ein Baukasten für Webanwendungen **
+**AppMS ist ein Baukasten für Webanwendungen**
 Dabei folgt AppMS dem Konzept von relationalen Datenbankmanagementsystemen (DBMS).
 
   * Beliebig viele Anwendungen (APP's) werden durch ein zentrales Anwendungsverwaltungssystem verwaltet (Multi-App-Management)
