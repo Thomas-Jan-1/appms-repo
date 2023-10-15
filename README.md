@@ -8,9 +8,9 @@
 2. [Funktionsüberblick](#Funktionsüberblick)
 3. [Anwendungsbeispiele](#Anwendungsbeispiele)
 4. [Installation](#Installation)
-4.1 [Systemvoraussetzungen](#Systemvoraussetzungen)
-4.2 [Installation mit Ansible](#Installation mit Ansible)
-4.3 [Weitere Installationsmöglichkeiten](#Weitere Installationsmöglichkeiten)
+4.1. [Systemvoraussetzungen](#Systemvoraussetzungen)
+4.2. [Installation mit Ansible](#Installation mit Ansible)
+4.3. [Weitere Installationsmöglichkeiten](#Weitere Installationsmöglichkeiten)
 
 
 ## Verwendungszweck
