@@ -10,7 +10,7 @@
 4. [Installation](#Installation)
 4.1. [Systemvoraussetzungen](#Systemvoraussetzungen)
 4.2. [Installation mit Ansible](#Installation mit Ansible)
-4.3. [Weitere Installationsmöglichkeiten](#Weitere Installationsmöglichkeiten)
+4.3. [Weitere Installationsmöglichkeiten](#weitere Installationsmöglichkeiten)
 
 
 ## Verwendungszweck
@@ -87,9 +87,12 @@ $ npm start
 
 
 ### Systemvoraussetzungen
+ein wenig Text
 
 
 ### Installation mit Ansible
+ein wenig Text
 
 
 ### weitere Installationsmöglichkeiten
+ein wenig Text
