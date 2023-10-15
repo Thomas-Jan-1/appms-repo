@@ -9,8 +9,8 @@
 3. [Anwendungsbeispiele](#Anwendungsbeispiele)
 4. [Installation](#Installation)
 4.1. [Systemvoraussetzungen](#Systemvoraussetzungen)
-4.2. [Installation mit Ansible](#Installation mit Ansible)
-4.3. [Weitere Installationsmöglichkeiten](#weitere Installationsmöglichkeiten)
+4.2. [Installation mit Ansible](#Installation_mit_Ansible)
+4.3. [Weitere Installationsmöglichkeiten](#weitere_Installationsmöglichkeiten)
 
 
 ## Verwendungszweck
@@ -90,9 +90,9 @@ $ npm start
 ein wenig Text
 
 
-### Installation mit Ansible
+### Installation_mit_Ansible
 ein wenig Text
 
 
-### weitere Installationsmöglichkeiten
+### weitere_Installationsmöglichkeiten
 ein wenig Text
