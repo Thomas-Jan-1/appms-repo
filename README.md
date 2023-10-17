@@ -1,5 +1,6 @@
-# appms-repo
 ***
+# appms-repo
+
 ![AppMS, eine Basis für viele Anwendungen](/img/eine_basis_fuer_viele_apps.jpg)
 
 
@@ -13,8 +14,10 @@
 4.3. [Weitere Installationsmöglichkeiten](#weitere_Installationsmöglichkeiten)
 
 
-## Verwendungszweck
 ***
+## Verwendungszweck
+
+
 
 **AppMS ist ein Baukasten für Webanwendungen**
 Dabei folgt AppMS dem Konzept von relationalen Datenbankmanagementsystemen (DBMS).
@@ -30,9 +33,9 @@ Dabei folgt AppMS dem Konzept von relationalen Datenbankmanagementsystemen (DBMS
 
 **AppMS-Anwendungen altern nicht, da sie regelmäßig über Updates des Kernmoduls auf einem aktuellen technischen Stand gehalten werden.**
 
-
-## Funktionsüberblick
 ***
+## Funktionsüberblick
+
 
 * statische Formulare
 * interaktive Formulare
@@ -41,21 +44,21 @@ Dabei folgt AppMS dem Konzept von relationalen Datenbankmanagementsystemen (DBMS
 * Auswertungsdesigner
 * Authentifizierungsmethoden: interne DB und Ldap (SSO in Arbeit)
 * Anbindung mehrerer DBMS auf einer Maske (postgres, MySql)
-* durchgängiges Rollen- und Rechte-Management
+* durchgängiges Rollen- und Rechte-Modell
 * umfangreiche Security-Maßnahmen
 * integrierter Debugger
 * Exportformate: csv, rtf, mail
 * flexible Design-Gestaltung
 * Verwaltung von historisierten Daten
 * Daten dynamsich per Ajax nachladen
-* serverseitiges Anstoßen von Scripten (shell, cmd)
+* serverseitiges Anstoßen von Scripten (unix->shell oder  windows->cmd)
 
 
 
 
-
-## Anwendungsbeispiele
 ***
+## Anwendungsbeispiele
+
 umgesetzte Anwendungen
 * **BI-Manager** (Tool zur Verwaltung von Schlüsseltabellen und Datenimporten eines DataWarehouse als Teil eines Business-Intelligence-Systems)
 ![App BI-Manager](/img/example_bi-manager.png)
@@ -76,9 +79,9 @@ umgesetzte Anwendungen
 ![App Wählerverzeichnis](/img/example_vote1.png)
 
 
-
-## Installation
 ***
+## Installation
+
 
 $ git clone https://example.com
 $ cd ../path/to/the/file
@@ -87,7 +90,14 @@ $ npm start
 
 
 ### Systemvoraussetzungen
-ein wenig Text
+**<span style="background-color:lightyellow">Beachte, dass von den nachfolgend genannten Produkten stets nur aktuelle  Versionen eingesetzt werden sollten!</span>**
+
+
+  * Webserver: Apache 
+  * PHP
+  * Datenbank: Postgres (empfohlen), MySql oder MariaDB
+  * [ggf. Ldap-Verbindung]
+  * Client: aktueller Browser (Bspw. Firefox, Edge, Safari, Chrome, Opera, …)
 
 
 ### Installation_mit_Ansible
