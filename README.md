@@ -5,13 +5,18 @@
 
 
 ## Table of Contents
-1. [Verwendungszweck](#Verwendungszweck)
-2. [Funktionsüberblick](#Funktionsüberblick)
-3. [Anwendungsbeispiele](#Anwendungsbeispiele)
-4. [Installation](#Installation)
-4.1. [Systemvoraussetzungen](#Systemvoraussetzungen)
-4.2. [Installation mit Ansible](#Installation_mit_Ansible)
-4.3. [Weitere Installationsmöglichkeiten](#weitere_Installationsmöglichkeiten)
+1. [Verwendungszweck](##Verwendungszweck)
+2. [Funktionsüberblick](##Funktionsüberblick)
+3. [Anwendungsbeispiele](##Anwendungsbeispiele)
+4. [Installation](##Installation)
+4.1. [Systemvoraussetzungen](###Systemvoraussetzungen)
+4.2. [Installation mit Ansible](###Installation mit Ansible - komplett)
+4.3. [Weitere Installationsmöglichkeiten](###weitere Installationsmöglichkeiten)
+4.3.1 [Installation unter Ubuntu](####Installation unter Ubuntu - komplett)
+4.3.2 [Installation unter Windows](####Installtion unter Windows - komplett)
+5. [Update einspielen](##Update einspielen)
+6. [zusätzliche Anwendung installieren](##zusätzliche Anwendungen installieren)
+
 
 
 ***
@@ -59,9 +64,11 @@ Dabei folgt AppMS dem Konzept von relationalen Datenbankmanagementsystemen (DBMS
 ***
 ## Anwendungsbeispiele
 
-umgesetzte Anwendungen
+
 * **BI-Manager** (Tool zur Verwaltung von Schlüsseltabellen und Datenimporten eines DataWarehouse als Teil eines Business-Intelligence-Systems)
 ![App BI-Manager](/img/example_bi-manager.png)
+
+
 
 
 
@@ -70,8 +77,12 @@ umgesetzte Anwendungen
 
 
 
+
+
 * **Workflow-Manager** (integraler Bestandteil aller Tools -> alle Daten können auch über Workflows erfasst werden.)
 ![App Workflow](/img/example_workflow.png)
+
+
 
 
 
@@ -79,14 +90,10 @@ umgesetzte Anwendungen
 ![App Wählerverzeichnis](/img/example_vote1.png)
 
 
+
+
 ***
 ## Installation
-
-
-$ git clone https://example.com
-$ cd ../path/to/the/file
-$ npm install
-$ npm start
 
 
 ### Systemvoraussetzungen
@@ -99,10 +106,53 @@ $ npm start
   * [ggf. Ldap-Verbindung]
   * Client: aktueller Browser (Bspw. Firefox, Edge, Safari, Chrome, Opera, …)
 
+***
+### Installation_mit_Ansible - komplett
+Am einfachsten ist es AppMS mit Hilfe eines Ansible-Skriptes zu installieren. Das Script ist zur Installation auf Basis von Ubuntu 22.04 geeignet. Dabei werden alle Abhängigkeiten (postgres, Apache, ufw, ...) ebenfalls installiert und konfiguriert.
+Wenn Sie bereits einen fertig konfigurierten Webserver haben, dann nutzen Sie die Installationsmethode 
 
-### Installation_mit_Ansible
-ein wenig Text
+
+ToDo's:
+-------
+- warum ist files/appms_step1.dump?
+- Wieso wird die dfn-chain mit ausgeliefert?
+- Kann die aktuellste appms-sys01-Datei aus dem repo per wget abgeholt werden?
+- Warum fehlten die Pakete, welche in der dokuwiki-Installation genannt werden?
 
 
+***
 ### weitere_Installationsmöglichkeiten
-ein wenig Text
+
+
+#### Installation unter Ubuntu - komplett
+![Installation einer produktiven Umgebung unter Ubuntu](/install/installation_einer_produktivumgebung_ubuntu.pdf)
+
+
+#### Installation unter Windows - komplett
+![Installation einer produktiven Umgebung unter Ubuntu](/install/installation_einer_testumgebung_windows.pdf)
+
+#### Installation für vorhandenen Webserver - nur AppMS
+Voraussetzungen:
+- Webserver (Apache) ist vorhanden
+- Datenbank (postgres) ist vorhanden
+- hier ergänzen
+
+
+
+
+## Update einspielen
+![Update einspielen](/install/update_programmversion_installieren.pdf)
+
+## zusätzliche Anwendung installieren
+- Gibt es dafür bereits eine Anleitung? Falls nein im Wiki erstellen oder Maske "neue APP installieren" erweitern.
+Testen mit REQ11
+- prüfen, ob die normale Installation bereits das Wiki installiert -> laut Programmcode, ja
+
+
+!!! Für eine Erstauslieferung reicht das!!!
+
+
+-> in Ansible-Script die aktuelles Version herunterladen -> Wie kann die ermittelt werden?
+-> in Ansible auch gleich die Wiki-Inhalte von SYS01 herunterladen und installieren?
+
+
