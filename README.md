@@ -108,11 +108,11 @@ Dabei folgt AppMS dem Konzept von relationalen Datenbankmanagementsystemen (DBMS
 
 ***
 ### Installation mit Ansible
-Am einfachsten ist es AppMS mit Hilfe eines Ansible-Skriptes zu installieren. Das Script ist zur Installation auf Basis von Ubuntu 22.04 geeignet. Dabei werden alle Abhängigkeiten (postgres, Apache, ufw, ...) ebenfalls installiert und konfiguriert.
-Wenn Sie bereits einen fertig konfigurierten Webserver haben, dann nutzen Sie die Installationsmethode 
+Am **einfachsten** ist es AppMS mit Hilfe eines Ansible-Skriptes zu installieren. Das Script ist zur Installation auf Basis von Ubuntu 22.04 geeignet. Dabei werden alle Abhängigkeiten (postgres, Apache, ufw, ...) ebenfalls installiert und konfiguriert.
+Wenn Sie bereits einen fertig konfigurierten Webserver haben, dann nutzen Sie diese Installationsmethode. Andernfallslohnt sich auch dieInstallation vonAnsible, es ist nicht schwer (siehe: https://docs.ansible.com/ansible/latest/getting_started/index.html).
 
 Voraussetzungen:
-- ubuntu 22.04 
+- Auf dem Zielhost ist ubuntu 22.04 vorhanden
 
 
 
@@ -151,9 +151,11 @@ Testen mit REQ11
 
 ToDo's:
 -------
-- Wieso wird die dfn-chain mit ausgeliefert?
 -> in Ansible-Script die aktuelles Version herunterladen -> Wie kann die ermittelt werden?
 -> in Ansible auch gleich die Wiki-Inhalte von SYS01 herunterladen und installieren?
+
+-> Abschnitt: Installation für vorhandenen Webserver ergänzen
+-> Abschnitt: zusätzliche Anwendung installieren
 
 
 
