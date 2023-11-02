@@ -10,12 +10,12 @@
 - [Anwendungsbeispiele](#Anwendungsbeispiele)
 - [Installation](#Installation)
   - [Systemvoraussetzungen](#Systemvoraussetzungen)
-  - [Installation mit Ansible](###Installation-mit-Ansible)
-  - [Weitere Installationsmöglichkeiten](###weitere-Installationsmöglichkeiten)
-    - [Installation unter Ubuntu](####Installation-unter-Ubuntu)
-    - [Installation unter Windows](####Installtion-unter-Windows)
-- [Update einspielen](##Update-einspielen)
-- [zusätzliche Anwendung installieren](##zusätzliche-Anwendungen-installieren)
+  - [Installation mit Ansible](#Installation-mit-Ansible)
+  - [weitere Installationsvarianten](#weitere-Installationsvarianten)
+    - [Installation unter Ubuntu](#Installation-unter-Ubuntu)
+    - [Installation unter Windows](#Installation-unter-Windows)
+- [Update einspielen](#Update-einspielen)
+- [zusätzliche Anwendung installieren](#zusätzliche-Anwendungen-installieren)
 
 
 
@@ -115,14 +115,11 @@ Voraussetzungen:
 - ubuntu 22.04 
 
 
-ToDo's:
--------
-- Wieso wird die dfn-chain mit ausgeliefert?
-- Warum fehlten die Pakete, welche in der dokuwiki-Installation genannt werden?
+
 
 
 ***
-### weitere_Installationsmöglichkeiten
+### weitere Installationsvarianten
 
 
 #### Installation unter Ubuntu
@@ -150,10 +147,14 @@ Voraussetzungen:
 Testen mit REQ11
 
 
-!!! Für eine Erstauslieferung reicht das!!!
 
 
+ToDo's:
+-------
+- Wieso wird die dfn-chain mit ausgeliefert?
 -> in Ansible-Script die aktuelles Version herunterladen -> Wie kann die ermittelt werden?
 -> in Ansible auch gleich die Wiki-Inhalte von SYS01 herunterladen und installieren?
+
+
 
 
