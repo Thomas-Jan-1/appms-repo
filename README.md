@@ -5,17 +5,17 @@
 
 
 ## Table of Contents
-1. [Verwendungszweck](##Verwendungszweck)
-2. [Funktionsüberblick](##Funktionsüberblick)
-3. [Anwendungsbeispiele](##Anwendungsbeispiele)
-4. [Installation](##Installation)
-4.1. [Systemvoraussetzungen](###Systemvoraussetzungen)
-4.2. [Installation mit Ansible](###Installation mit Ansible - komplett)
-4.3. [Weitere Installationsmöglichkeiten](###weitere Installationsmöglichkeiten)
-4.3.1 [Installation unter Ubuntu](####Installation unter Ubuntu - komplett)
-4.3.2 [Installation unter Windows](####Installtion unter Windows - komplett)
-5. [Update einspielen](##Update einspielen)
-6. [zusätzliche Anwendung installieren](##zusätzliche Anwendungen installieren)
+- [Verwendungszweck](#Verwendungszweck)
+- [Funktionsüberblick](#Funktionsüberblick)
+- [Anwendungsbeispiele](#Anwendungsbeispiele)
+- [Installation](#Installation)
+  - [Systemvoraussetzungen](#Systemvoraussetzungen)
+  - [Installation mit Ansible](###Installation-mit-Ansible)
+  - [Weitere Installationsmöglichkeiten](###weitere-Installationsmöglichkeiten)
+    - [Installation unter Ubuntu](####Installation-unter-Ubuntu)
+    - [Installation unter Windows](####Installtion-unter-Windows)
+- [Update einspielen](##Update-einspielen)
+- [zusätzliche Anwendung installieren](##zusätzliche-Anwendungen-installieren)
 
 
 
@@ -107,16 +107,17 @@ Dabei folgt AppMS dem Konzept von relationalen Datenbankmanagementsystemen (DBMS
   * Client: aktueller Browser (Bspw. Firefox, Edge, Safari, Chrome, Opera, …)
 
 ***
-### Installation_mit_Ansible - komplett
+### Installation mit Ansible
 Am einfachsten ist es AppMS mit Hilfe eines Ansible-Skriptes zu installieren. Das Script ist zur Installation auf Basis von Ubuntu 22.04 geeignet. Dabei werden alle Abhängigkeiten (postgres, Apache, ufw, ...) ebenfalls installiert und konfiguriert.
 Wenn Sie bereits einen fertig konfigurierten Webserver haben, dann nutzen Sie die Installationsmethode 
+
+Voraussetzungen:
+- ubuntu 22.04 
 
 
 ToDo's:
 -------
-- warum ist files/appms_step1.dump?
 - Wieso wird die dfn-chain mit ausgeliefert?
-- Kann die aktuellste appms-sys01-Datei aus dem repo per wget abgeholt werden?
 - Warum fehlten die Pakete, welche in der dokuwiki-Installation genannt werden?
 
 
@@ -124,14 +125,15 @@ ToDo's:
 ### weitere_Installationsmöglichkeiten
 
 
-#### Installation unter Ubuntu - komplett
+#### Installation unter Ubuntu
 ![Installation einer produktiven Umgebung unter Ubuntu](/install/installation_einer_produktivumgebung_ubuntu.pdf)
 
 
-#### Installation unter Windows - komplett
+#### Installation unter Windows
 ![Installation einer produktiven Umgebung unter Ubuntu](/install/installation_einer_testumgebung_windows.pdf)
 
-#### Installation für vorhandenen Webserver - nur AppMS
+
+#### Installation für vorhandenen Webserver
 Voraussetzungen:
 - Webserver (Apache) ist vorhanden
 - Datenbank (postgres) ist vorhanden
@@ -146,7 +148,6 @@ Voraussetzungen:
 ## zusätzliche Anwendung installieren
 - Gibt es dafür bereits eine Anleitung? Falls nein im Wiki erstellen oder Maske "neue APP installieren" erweitern.
 Testen mit REQ11
-- prüfen, ob die normale Installation bereits das Wiki installiert -> laut Programmcode, ja
 
 
 !!! Für eine Erstauslieferung reicht das!!!
