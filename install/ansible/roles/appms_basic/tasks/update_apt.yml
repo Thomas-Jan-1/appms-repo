@@ -1,0 +1,8 @@
+---
+- name: Update Cache
+  ansible.builtin.apt:
+    update_cache: true
+- name: Upgrade && Autoremove
+  ansible.builtin.apt:
+    upgrade: dist
+    autoremove: true

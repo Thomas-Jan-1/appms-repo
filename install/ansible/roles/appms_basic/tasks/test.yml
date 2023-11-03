@@ -1,0 +1,13 @@
+---
+- name: Create a new schema with name acme in test database
+  community.postgresql.postgresql_schema:
+    db: "{{ db_name }}"
+    name: "{{ appms_db_schema }}"
+    owner: "{{ db_user }}"
+
+- name: DB-Script#step für appms ausführen
+  community.postgresql.postgresql_script:
+    path: "{{ web_root }}/test.sql"
+    port: "{{ db_port }}"
+    db: "{{ db_name }}"
+    encoding: "{{ db_encoding }}"

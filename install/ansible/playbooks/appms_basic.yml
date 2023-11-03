@@ -1,0 +1,12 @@
+---
+
+
+- name: Execute appms_basic playbook
+  hosts: appms-test-server-02
+  become: true
+  vars_files:
+    - ../roles_IVO/appms_basic/vars/my_vars.yml
+
+  roles:
+  #-> Aufruf des Default-Skriptes (appms_basic/tasks/main.yml
+    - appms_basic

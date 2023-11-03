@@ -109,10 +109,32 @@ Dabei folgt AppMS dem Konzept von relationalen Datenbankmanagementsystemen (DBMS
 ***
 ### Installation mit Ansible
 Am **einfachsten** ist es AppMS mit Hilfe eines Ansible-Skriptes zu installieren. Das Script ist zur Installation auf Basis von Ubuntu 22.04 geeignet. Dabei werden alle Abhängigkeiten (postgres, Apache, ufw, ...) ebenfalls installiert und konfiguriert.
-Wenn Sie bereits einen fertig konfigurierten Webserver haben, dann nutzen Sie diese Installationsmethode. Andernfallslohnt sich auch dieInstallation vonAnsible, es ist nicht schwer (siehe: https://docs.ansible.com/ansible/latest/getting_started/index.html).
 
-Voraussetzungen:
+Hinweise zu Ansible: https://docs.ansible.com/ansible/latest/index.html
+
+Voraussetzung:
 - Auf dem Zielhost ist ubuntu 22.04 vorhanden
+
+Vorgehen:
+- kopieren Sie sich den Ansible-Ordner: 
+```bash
+tree 
+└───ansible
+    ├───roles
+    │   └───appms_basic
+    │       ├───defaults (wird nicht verwendet)
+    │       ├───files    
+    │       ├───handlers (wird nicht verwendet)
+    │       ├───tasks    
+    │       ├───tests    (wird nicht verwendet)
+    │       └───vars
+    ├───playbooks
+    └───hosts.d
+```
+- individuelles Datenbankpasswort für Nutzer appms festlegen (ansible/roles/appms-basic/vars/my_vars.yml -> Zeile 81)
+- Ziel-host in Ansible-Host-Datei eintragen (ansible/host.d/hosts)  Bsp.: appms-test-server-02    ansible_host=192.168.178.48
+- Readme-Datei lesen
+- playbook starten
 
 
 
@@ -134,8 +156,8 @@ Voraussetzungen:
 Voraussetzungen:
 - Webserver (Apache) ist vorhanden
 - Datenbank (postgres) ist vorhanden
-- hier ergänzen
 
+FixMe: coming soon ...
 
 
 
@@ -143,20 +165,7 @@ Voraussetzungen:
 ![Update einspielen](/install/update_programmversion_installieren.pdf)
 
 ## zusätzliche Anwendung installieren
-- Gibt es dafür bereits eine Anleitung? Falls nein im Wiki erstellen oder Maske "neue APP installieren" erweitern.
-Testen mit REQ11
-
-
-
-
-ToDo's:
--------
--> in Ansible-Script die aktuelles Version herunterladen -> Wie kann die ermittelt werden?
--> in Ansible auch gleich die Wiki-Inhalte von SYS01 herunterladen und installieren?
-
--> Abschnitt: Installation für vorhandenen Webserver ergänzen
--> Abschnitt: zusätzliche Anwendung installieren
-
+- FixMe: hier den Link zum integrierten Wiki ergänzen
 
 
 

@@ -1,0 +1,299 @@
+---
+
+############################################################################
+## Abhängigkeiten für AppMS und Dokuwiki                                  ##
+############################################################################
+
+# Module für Webserver, Postgres und AppMS 
+- name: Abhängigkeiten installieren (PHP)
+  ansible.builtin.apt:
+    name:
+      - "{{ php_version }}"
+      - "{{ php_version }}-simplexml"
+      - "{{ php_version }}-zip"
+      - "{{ php_version }}-pgsql"
+      - "{{ php_version }}-mbstring"
+      - libapache2-mod-php
+      - "{{ php_version }}-xml"
+      - "{{ php_version }}-intl"
+      - "{{ php_version }}-gd"
+
+
+      
+
+
+
+############################################################################
+## AppMS einrichten                                                       ##
+############################################################################
+
+## Achtung: Zugriff in pg_hba.conf muss temporär auf trusted gesetzt werden.
+# https://www.postgresql.org/docs/current/auth-trust.html
+
+
+- name: Zugriff  für lokale user auf trust setzen in pg_hba.conf
+  ansible.builtin.copy:
+    src: "{{ db_pghbafile_before }}"
+    dest: "{{ db_path_conf }}/{{ db_pghbafile_conf }}"
+    owner: postgres
+    group: postgres
+    mode: '0640'
+
+
+- name: "Restart service 'postgres_version' , um temporäre pg_hba.conf zu laden"
+  ansible.builtin.service:
+    name: "postgresql"
+    state: restarted
+
+
+- name: Verzeichnis tmp-directory in web-root erstellen
+  ansible.builtin.file:
+    path: "{{ web_root }}/tmp"
+    state: directory
+    mode: '0750'
+    owner: www-data
+    group: www-data
+
+
+
+#folgender Abschnitt funktioniert noch nicht, da unzip nicht läuft. 
+#Alternativ erst herunterladen und dann mit shell entpacken
+#- name: Download aktuelle SYS01-AppMS-Version
+#  ansible.builtin.unarchive:
+#    src: '{{ item.url }}'
+#    dest: "{{ web_root }}/tmp"
+#    remote_src: yes
+#    owner: "{{ apache_user }}"
+#    group: "{{ apache_user }}"
+##    extra_opts:
+##      - '-z'
+#  with_items:
+#    - { url: "https://github.com/Thomas-Jan-1/appms-repo/blob/main/SYS01/{{ appms_version }}/SYS01_{{ appms_version }}.zip"}
+  
+
+- name: Installationspaket von appms auf Remoteserver kopieren und entpacken
+  ansible.builtin.unarchive:
+    src: "{{ appms_version_file }}.zip"
+    dest: "{{ web_root }}/tmp"
+    owner: www-data
+    group: www-data
+
+
+- name: Anwendung appms nach webroot kopieren
+  ansible.builtin.copy:
+    src: "{{ web_root }}/tmp/appms/"
+    dest: "{{ web_root }}/appms"
+    owner: www-data
+    group: www-data
+    mode: '0640'
+    remote_src: true
+
+
+- name: Copy config.xml (AppMS) von TEMPL
+  ansible.builtin.copy:
+    src: "{{ web_root }}/appms/data/TEMPL/config/config_default.xml"
+    dest: "{{ web_root }}/appms/data/SYS01/config/config.xml"
+    owner: www-data
+    group: www-data
+    mode: '0640'
+    remote_src: true
+
+
+- name: "Platzhalter in config.xml ersetzen"
+  ansible.builtin.replace:
+    path: "{{ web_root }}/appms/data/SYS01/config/config.xml"
+    regexp: '{{ item.placeholder }}'
+    replace: '{{ item.Set }}'
+  with_items:
+    - { placeholder: "postgresql", Set: "{{ appms_dbms }}"}
+    - { placeholder: "localhost", Set: "{{ appms_db_host }}"}
+    - { placeholder: "5432", Set: "{{ appms_db_port }}"}
+    - { placeholder: "my_database", Set: "{{ appms_db_name }}"}
+    - { placeholder: "my_user", Set: "{{ appms_db_user }}"}
+    - { placeholder: "my_password", Set: "{{ appms_db_userpassword }}"}
+
+
+- name: DB-Basis-Skript entpacken
+  ansible.builtin.unarchive:
+    src: "{{ web_root }}/tmp/{{ appms_db_script }}.zip"
+    dest: "{{ web_root }}/tmp"
+    remote_src: true
+    owner: www-data
+    group: www-data
+
+
+- name: "Platzhalter '[db_user]' in Installationsscript ersetzen"
+  ansible.builtin.replace:
+    path: "{{ web_root }}/tmp/{{ appms_db_script }}"
+    regexp: '\[db_user\]'
+    replace: "{{ appms_db_user }}"
+
+
+- name: Datenbankbenutzer erstellen
+  community.postgresql.postgresql_user:
+    name: "{{ appms_db_user }}"
+    password: "{{ appms_db_userpassword }}"
+    expires: infinity
+    port: "{{ appms_db_port }}"
+    state: present
+
+
+- name: Create db
+  community.postgresql.postgresql_db:
+    name: "{{ appms_db_name }}"
+    state: present
+    encoding: "{{ appms_db_encoding }}"
+    ssl_mode: require
+    port: "{{ appms_db_port }}"
+    owner: "{{ appms_db_user }}"
+
+
+- name: Create db_schema
+  community.postgresql.postgresql_schema:
+    db: "{{ appms_db_name }}"
+    name: "{{ appms_db_schema }}"
+    owner: "{{ appms_db_user }}"
+
+
+- name: DB-Script#step für appms ausführen
+  community.postgresql.postgresql_script:
+    path: "{{ web_root }}/tmp/{{ appms_db_script }}"
+    port: "{{ appms_db_port }}"
+    db: "{{ appms_db_name }}"
+    encoding: "{{ appms_db_encoding }}"
+    login_user: "{{ appms_db_user }}"
+    login_password: "{{ appms_db_userpassword }}"
+
+- name: Zugriff für lokale user wieder auf peer setzen (pg_hba.conf)
+  ansible.builtin.copy:
+    src: "{{ db_pghbafile_after }}"
+    dest: "{{ db_path_conf }}/{{ db_pghbafile_conf }}"
+    owner: postgres
+    group: postgres
+    mode: '0640'
+
+
+- name: "Platzhalter '[db_user]' in pg_hba ersetzen"
+  ansible.builtin.replace:
+    path: "{{ db_path_conf }}/{{ db_pghbafile_conf }}"
+    regexp: 'appms_db_user'
+    replace: "{{ appms_db_user }}"
+
+
+- name: Zugriffsrechte im Web-Verzeichnis rekursiv setzen
+  ansible.builtin.file:
+    path: "{{ web_root }}/appms"
+    state: directory
+    recurse: true
+    owner: www-data
+    group: www-data
+    mode: '0750'
+
+
+# Anpassungen in php.ini
+- name: Konfiguration php.ini anpassen anpassen
+  ansible.builtin.lineinfile:
+    path: "{{ php_ini_file }}"
+    regexp: '{{ item.Searchline }}'
+    line: '{{ item.Set }}'
+    state: present
+  with_items:
+    - { Searchline: "max_input_vars", Set: "max_input_vars = 10000" }
+    - { Searchline: ";extension=pgsql", Set: "extension=pgsql" }
+    - { Searchline: "upload_max_filesize", Set: "upload_max_filesize = 50M" }
+    - { Searchline: "post_max_size", Set: "post_max_size = 51M"}
+    
+
+
+
+- name: "Restart service {{ postgres_version }}"
+  ansible.builtin.service:
+    name: "postgresql"
+    state: restarted
+
+
+############################################################################
+## Dokuwiki in den AppMS-Installationspfad integrieren                    ##
+############################################################################
+- name: Verzeichnis für Wiki erstellen
+  file:
+    path: "{{ web_root }}/appms/wiki"
+    state: directory
+    owner: "{{ apache_user }}"
+    group: "{{ apache_user }}"
+    mode: '0750'
+
+- name: Download Dokuwiki und entpacken nach Installationspfad/wiki
+  ansible.builtin.unarchive:
+    src: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
+    dest: "{{ web_root }}/tmp"
+    remote_src: yes
+    owner: "{{ apache_user }}"
+    keep_newer: true
+    group: "{{ apache_user }}"
+
+
+#https://stackoverflow.com/questions/40230184/how-to-do-multiline-shell-script-in-ansible
+- name: Dokuwiki von tmp/ nach wiki/ kopieren und grundlegende Einstellungen vornehmen
+  shell: |
+    mv "{{ web_root }}"/tmp/dokuwiki-*a/* "{{ web_root }}"/appms/wiki/
+
+
+- name: Dokuwiki user-auth anlegen, jedoch ohne user -> niemand kann sich per Default anmelden
+  shell: |
+    mv "{{ web_root }}"/appms/wiki/conf/users.auth.php.dist "{{ web_root }}"/appms/wiki/conf/users.auth.php
+
+
+- name: Download notwendiger Dokuwiki-Plugins und Themes
+  ansible.builtin.unarchive:
+    src: '{{ item.url }}'
+    dest: "{{ web_root }}/tmp"
+    remote_src: yes
+    owner: "{{ apache_user }}"
+    keep_newer: true
+    group: "{{ apache_user }}"
+  with_items:
+    - { url: "https://github.com/cosmocode/simplenavi/zipball/master"}
+    - { url: "https://github.com/revolution-arts/dokuwiki-plugin-htmldetailstag/zipball/master"}
+    - { url: "https://github.com/hanche/dokuwiki_color_plugin/zipball/master"}
+    - { url: "https://github.com/paulino/dokuwiki-template-20cones/archive/master.zip"}
+
+- name: plugins von temporären Pfaden in die richtigen Pfade verschieben
+  shell: |
+    mv "{{ web_root }}"/tmp/cosmocode-simplenavi*/ "{{ web_root }}"/appms/wiki/lib/plugins/simplenavi
+    mv "{{ web_root }}"/tmp/revolution-arts-dokuwiki-plugin-htmldetailstag*/ "{{ web_root }}"/appms/wiki/lib/plugins/htmldetailstag
+    mv "{{ web_root }}"/tmp/hanche-dokuwiki_color_plugin*/ "{{ web_root }}"/appms/wiki/lib/plugins/color
+    mv "{{ web_root }}"/tmp/dokuwiki-template-20cones*/ "{{ web_root }}"/appms/wiki/lib/tpl/20cones
+
+
+- name: Dokuwiki conf-files kopieren, um Grundeinstellungen vorzunehmen
+  ansible.builtin.copy:
+    src: "{{ item.file }}" 
+    dest: "{{ web_root }}/appms/wiki/{{ item.dest_dir }}"
+    owner: "{{ apache_user }}"
+    group: "{{ apache_user }}"
+    mode: '0640'
+  with_items:
+    - { file: "{{ dokuwiki_local_file }}", dest_dir: "{{ dokuwiki_conf_dir }}"}
+    - { file: "{{ dokuwiki_user_file }}", dest_dir: "{{ dokuwiki_conf_dir }}"}
+    - { file: "{{ dokuwiki_acl_file }}", dest_dir: "{{ dokuwiki_conf_dir }}"}
+    - { file: "{{ dokuwiki_startpage_file }}", dest_dir: "{{ dokuwiki_pages_dir }}"}
+    - { file: "{{ dokuwiki_sidebarpage_file }}", dest_dir: "{{ dokuwiki_pages_dir }}"}
+    
+
+- name: "Restart service apache"
+  ansible.builtin.service:
+    name: "apache2"
+    state: restarted
+
+
+############################################################################
+## Aufräumen                                                              ##
+############################################################################
+- name: Aufräumen -> temporäre Dateien und Verzeichnisse löschen
+  ansible.builtin.file:
+    path: '{{ item.path_or_file }}'
+    state: absent
+  with_items:
+    - { path_or_file: "{{ web_root }}/tmp"}
+    - { path_or_file: "{{ web_root }}/index.html"}

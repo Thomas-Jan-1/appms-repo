@@ -1,0 +1,3 @@
+[Sonstige]
+appms-test-server-01    ansible_host=192.168.178.47
+appms-test-server-02    ansible_host=192.168.178.48

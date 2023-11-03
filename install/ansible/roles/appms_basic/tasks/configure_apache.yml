@@ -1,0 +1,84 @@
+---
+# vorbereitettes Zertifikat auf den Server kopieren
+- name: Apache Zertifikate einrichten
+  block:
+    - name: Zertifikate kopieren un Berechtigungen setzen
+      ansible.builtin.copy:
+        src: "{{ cert_src_file }}"
+        dest: "{{ cert_src_path }}"
+        owner: root
+        group: root
+        mode: '0644'
+ #   - name: Zertifikatskette kopieren und Berechtigungen setzen
+ #     ansible.builtin.copy:
+ #       src: "{{ cert_chain_file }}"
+ #       dest: "{{ cert_src_path }}"
+ #       owner: root
+ #       group: root
+ #       mode: '0644'
+    - name: Zertifikatsschlüssel kopieren und Berechtigungen setzen
+      ansible.builtin.copy:
+        src: "{{ private_src_file }}"
+        dest: "{{ private_src_path }}"
+        owner: root
+        group: ssl-cert
+        mode: '0640'
+
+# Anpassungen in /etc/apache2/conf-availeable/security.conf
+- name: Datei default-security anpassen
+  ansible.builtin.lineinfile:
+    path: "{{ default_security_file }}"
+    # Suchstring
+    regexp: '{{ item.Searchline }}'
+    # Ersetzen durch
+    line: '{{ item.Set }}'
+    state: present
+  with_items:
+  # kommentierte Zeile entfernen, da sonst auch diese mit dem nachfolgenden Befehl gematcht wird.
+    - { Searchline: "#ServerSignature", Set: "#" }
+    - { Searchline: "ServerSignature", Set: "ServerSignature {{ ServerSignature }}" }
+  # kommentierte Zeile entfernen, da sonst auch diese mit dem nachfolgenden Befehl gematcht wird.
+    - { Searchline: "#TraceEnable", Set: "#" }
+    - { Searchline: "TraceEnable", Set: "TraceEnable {{ TraceEnable }}" }
+
+
+# Apache konfigurieren
+- name: Apache konfigurieren
+  ansible.builtin.import_role: name=geerlingguy.apache
+  vars:
+    apache_vhosts:
+      # optional properties: 'serveradmin, serveralias, extra_parameters'
+      - servername: "{{ web_url }}"
+        documentroot: "{{ web_root }}"
+        serveradmin: "{{ web_serveradmin }}"
+        extra_parameters: |
+          RewriteEngine on
+          RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+    apache_vhosts_ssl:
+      # optional properties: 'serveradmin, serveralias, extra_parameters'
+      - servername: "{{ web_url }}"
+        documentroot: "{{ web_root }}"
+        serveradmin: "{{ web_serveradmin }}"
+        certificate_file: "{{ cert_src_path }}/{{ cert_src_file }}"
+        certificate_key_file: "{{ private_src_path }}/{{ private_src_file }}"
+        extra_parameters: |
+          Protocols "{{ apache_allowed_protocolls }}"
+          # direkten Aufruf von jwuery-Funktionen verhindern
+          RewriteCond %{REQUEST_URI} ^.*(%u0025%u007B|%24\{|\$\{).*$ [OR]
+          RewriteCond %{QUERY_STRING} ^.*(%u0025%u007B|%24\{|\$\{).*$
+          RewriteRule .* -  [R=404]
+          <filesMatch "^.*$">
+            FileETag None
+          </filesMatch>
+          Header edit Set-Cookie ^(.*)$ $1;HttpOnly;Secure
+          Header always set X-Frame-Options SAMEORIGIN
+          Header set X-XSS-Protection "1; mode=block"
+          Header always set Strict-Transport-Security "max-age=63072000; includeSubdomains;"
+    apache_remove_default_vhost: true
+
+# Apache envvars ergänzen („umask g-x,o-wrx“)
+- name: Ensure php extension matches new pattern
+  ansible.builtin.lineinfile:
+    path: "{{ apache_envvars_file }}"
+    search_string: 'umask'
+    line: "{{ apache_envvars_umask }}"

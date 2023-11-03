@@ -1,0 +1,12 @@
+---
+
+- name: Firewall ufw - allow 22, 80, 443, 5432
+  community.general.ufw:
+      rule: allow
+      port: "{{ item.port }}"
+      state: enabled
+  with_items:
+    - { port: "http" }
+    - { port: "https" }
+    - { port: "ssh" }
+    - { port: "5432" }

@@ -1,0 +1,15 @@
+---
+
+# tasks file for appms_basic
+- name: Importiere Task update_apt.yml
+  ansible.builtin.import_tasks: update_apt.yml
+- name: Importiere Task install_dependencies.yml
+  ansible.builtin.import_tasks: install_dependencies.yml
+- name: Importiere Task install_appms.yml
+  ansible.builtin.import_tasks: install_appms.yml
+- name: Importiere Task onfigure_apache.yml
+  ansible.builtin.import_tasks: configure_apache.yml
+- name: Importiere Task configure_ufw.yml
+  ansible.builtin.import_tasks: configure_ufw.yml
+# - name: Importiere Task test.yml
+#   import_tasks: test.yml

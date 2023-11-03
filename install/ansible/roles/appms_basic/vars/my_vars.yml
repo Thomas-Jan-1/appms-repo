@@ -1,0 +1,112 @@
+---
+#############################
+# vars file for appms_basic #
+#                           #
+# Hinweis:                  #
+# Diese Variablen können im #
+# playbook überlagert       #
+# werden.                   #
+#############################
+
+######################################################################
+# vars for install_dependencies, notwendige Programme
+# neueste Version
+apache_version:   "apache2"
+# Version 8.1 ist erst ab ubuntu 22.04 im Default-Repository vorhanden
+php_v:            "8.1"
+php_version:      "php{{ php_v }}"
+# mindestens 10, da sha-Encryption genutzt wird.
+postgres_v:       "14"
+postgres_version: "postgresql-{{ postgres_v }}"
+
+
+
+######################################################################
+# vars for configure_apache 
+# siehe auch: https://github.com/geerlingguy/ansible-role-apache
+# sowie: https://z-wiki.uni-potsdam.de/pages/viewpage.action?pageId=60990083#Apacheh%C3%A4rtenundoptimieren-SSL/TLSeinrichten
+# Anpassungen in vhost-Datei
+cert_src_path:            /etc/ssl/certs                
+cert_src_file:            appms-test-selfsigned.crt  
+private_src_path:         /etc/ssl/private  
+private_src_file:         appms-test-selfsigned.key  
+cert_chain_file:          dfn-chain.pem
+certificate_chain_file:   "{{ cert_src_path }}/{{ cert_chain_file }}"
+web_url:                  www.n-ansible-web-test-1.de
+web_root:                 /var/www/html
+web_serveradmin:          zuv-admins@uni-potsdam.de
+apache_vhosts_filename:   "appms_test.conf"
+apache_ssl_protocol:      "-ALL +TLSv1.2 +TLSv1.3"
+# SSLHonorCipherOrder On  -> Default in role apache -> nicht mit var änderbar
+apache_ssl_cipher_suite:  ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-CCM:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-CCM:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-CCM:ECDHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-SHA256:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-CCM8
+apache_allow_override:    "Limit"
+apache_options:           "-Indexes +FollowSymLinks +MultiViews -Includes"
+apache_mods_enabled:
+  - rewrite
+  - ssl
+  - headers
+  - http2
+apache_allowed_protocolls:  "h2 http/1.1"
+apache_envvars_file:      "/etc/apache2/envvars"
+apache_envvars_umask:     "umask g-x,o-wrx"
+apache_user:              "www-data"
+# Hinweis: in configure_apache.yml->apache_vhosts_ssl->extra_parameters werden weitere header-Einstellungen vorgenommen
+
+# Anpassungen in security.conf
+default_security_file:    /etc/apache2/conf-available/security.conf
+# verhindert, dass der Webserver zu viele Infos bei negativen Return-Codes, bspw. 404, ausliefert
+ServerSignature:          "Off"
+TraceEnable:              "Off"
+
+
+
+######################################################################
+# php.ini anpassen
+php_ini_file:             "/etc/php/{{ php_v }}/apache2/php.ini"
+
+
+
+######################################################################
+# lokale postgres-Installation (siehe: https://docs.ansible.com/ansible/latest/collections/community/postgresql/postgresql_db_module.html)
+db_path_conf:             "/etc/postgresql/{{ postgres_v }}/main"
+db_pghbafile_conf:        "pg_hba.conf"
+# setzt den Zugriff für loakle user temporär auf trust.
+db_pghbafile_before:      "pg_hba_before.conf"
+# setzt den Zugriff für lokale user wieder auf trust
+db_pghbafile_after:       "pg_hba_after.conf"
+
+
+
+######################################################################
+# appms-Variablen
+appms_version:            "20231101171832"
+# appms_version:            "{{ lookup('ansible.builtin.url', 'https://github.com/Thomas-Jan-1/appms-repo/blob/main/SYS01/stable/stable.txt', split_lines=False) }}"
+appms_version_file:       "SYS01_{{ appms_version }}" 
+appms_dbms:               "postgresql"
+appms_db_script:          "{{ appms_version }}_101_SYS01_postgresql.sql"
+# !Konstante! -> darf nicht verändert werden.
+appms_db_schema:          "manager"                               
+appms_db_host:            "localhost"
+appms_db_port:            "5432"
+appms_db_name:            appms
+appms_db_user:            appms
+# Passwort wird nach dem ersten Aufruf der Anwendung verschlüsselt. Passwort sollte geändert werden!
+appms_db_userpassword:    "appms_secret"
+# alternativ könnte das Passwort, mit Hilfe der ansible-vault-Funktion, auch in diesem Script bereits verschlüsselt abgelegt werden.
+# ansible-vault encrypt_string --vault-id tom@/.vault_pass 'appms_secret' --name 'appms_db_userpassword'
+# appms_db_userpassword: !vault |
+#           $ANSIBLE_VAULT;1.1;AES256
+#           32313835646636663639343163326638393766383938393736633732373161613734366630663733
+#           6363623531326538653563346238616166653364666466630a396436653231333335353365353837
+#           39616139333363633630643034333936346138333563373966623866643964623430653739653463
+#           3137616237623933630a613237623931373932356561303537633133663266663639383165373763
+#           3532
+# Wird bei DB-Einrichtung verwendet. In config.xml ist der Parameter jedoch ausgeblendet, sodass immer UNICODE verwendet wird. Ggf. muss da manuell angepasst werden.
+appms_db_encoding:        "UTF-8"
+dokuwiki_local_file:      "local.php"
+dokuwiki_user_file:       "users.auth.php"
+dokuwiki_acl_file:        "acl.auth.php"
+dokuwiki_startpage_file:  "start.txt"
+dokuwiki_sidebarpage_file: "sidebar.txt"
+dokuwiki_pages_dir:       "data/pages"
+dokuwiki_conf_dir:        "conf"
