@@ -14,6 +14,8 @@
   - [weitere Installationsvarianten](#weitere-Installationsvarianten)
     - [Installation unter Ubuntu](#Installation-unter-Ubuntu)
     - [Installation unter Windows](#Installation-unter-Windows)
+    - [Installation für vorhandenen Webserver](Installation-für-vorhandenen-Webserver)
+- [Wiki aufrufen](#Wiki-aufrufen)
 - [Update einspielen](#Update-einspielen)
 - [zusätzliche Anwendung installieren](#zusätzliche-Anwendungen-installieren)
 
