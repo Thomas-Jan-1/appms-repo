@@ -160,12 +160,23 @@ Voraussetzungen:
 FixMe: coming soon ...
 
 
+## Wiki aufrufen
+Mit jeder AppMS-Installation wird ein lokales Wiki installiert, welches umfangreiche Anleitungsartikel enthält.
+Das Wiki kann über den Browser aufgerufen werden: [URL-des Webservers]/appms/wiki
+![Wiki Startseite](/img/wiki-start.png)
+
 
 ## Update einspielen
 ![Update einspielen](/install/update_programmversion_installieren.pdf)
 
 ## zusätzliche Anwendung installieren
-- FixMe: hier den Link zum integrierten Wiki ergänzen
+Mit Hilfe von AppMS können beliebige Anwendungen erstellt und geteilt werden. In diesem Repository findet sich bspw. die Anwendung "Antragstool (REQ11). Diese kann über die Oberfläche installiert werden.
+Vorgehen:
+1. In AppMS mit dem Nutzer sys01root anmelden
+2. Maske "neue APP installieren" aufrufen.
+3. Den Anweisungen folgen.
 
+
+![eine zusätzliche Anwendung installieren](/img/weitere_app_installieren.png)
 
 
